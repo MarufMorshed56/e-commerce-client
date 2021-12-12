@@ -1,0 +1,9 @@
+.content{
+          justify-content:space-between;
+          align-items: center;
+          animation-timing-function: linear;
+          background-color:#fff7f7;
+          scroll-behavior: disable;
+          
+
+}
