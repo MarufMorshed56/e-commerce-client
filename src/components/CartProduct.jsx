@@ -13,8 +13,8 @@ import { useHistory } from 'react-router-dom';
 import  {useSelector } from 'react-redux';
 import {useDispatch} from 'react-redux'
 import {deleteProduct,updateProduct,clearCart,updatePrice} from "../redux/cartRedux"
-import cartSlice from '../redux/cartRedux'; 
-import { useImmerReducer } from "use-immer";
+// import cartSlice from '../redux/cartRedux'; 
+// import { useImmerReducer } from "use-immer";
 
 
 
@@ -198,6 +198,8 @@ const CartProduct = () => {
           const dispatch = useDispatch()
           const cart = useSelector(state=>state.cart)
           var total = useSelector(state=>state.cart.total)
+
+          const user = useSelector(state=>state.user.currentUser)
           const [newTotal, setTotal] = useState(total)
           
 useEffect(()=>{
@@ -226,8 +228,8 @@ useEffect(()=>{
 
 
 
-          const handleQuantity=(value, itemId)=>{   
-                    if(value==="decrease"){
+//           const handleQuantity=(value, itemId)=>{   
+//                     if(value==="decrease"){
                     // copyProduct.map((item)=>{
                     //           if(item.unique === itemId){
                     //                     // const quantity = item.quantity - 1;
@@ -238,9 +240,9 @@ useEffect(()=>{
                               //console.log("newProduct",products)                           
                     // })
                     // }else if(value==="increase"){
-                    }   
-                    console.log("clicked")      
-          }
+//                     }   
+//                     console.log("clicked")      
+//           }
 
           const HandleDelete =(itemId)=>{
                     const newProduct = products.filter((product)=> product.unique != itemId)
@@ -256,6 +258,9 @@ useEffect(()=>{
           const handleClearCart =()=>{
                     dispatch(clearCart())
                     console.log("clearing")
+          }
+          const handleCheckOut =()=>{
+                   history.push('/login')  
           }
 
 
@@ -318,9 +323,9 @@ return (
                               <DeleteForeverOutlined  style={{"color":"red","height":"40px","width":"40px"}} onClick={()=>HandleDelete(item.unique)} />
                               </ProductAmountContainer>
                               <ProductAmountContainer>            
-                              <Remove onClick={()=>handleQuantity("decrease",item.unique)} />
-                              <ProductAmount>{item.quantity}</ProductAmount>
-                              <Add  onClick={()=>handleQuantity("increase",item.unique)}/>
+                              {/* <Remove onClick={()=>handleQuantity("decrease",item.unique)} /> */}
+                              <ProductAmount>quantity : {item.quantity}</ProductAmount>
+                              {/* <Add  onClick={()=>handleQuantity("increase",item.unique)}/> */}
                               </ProductAmountContainer>
                               <ProductPrice>${item.totalPrice}</ProductPrice>
                     </PriceDetail>
@@ -349,6 +354,8 @@ return (
                     <SummaryItemText>Total</SummaryItemText>
                     <SummaryItemPrice>${newTotal}</SummaryItemPrice>
                     </SummaryItem>
+
+                    {!user ? <Button onClick={()=>handleCheckOut()}>LOG IN TO CHECKOUT</Button>:
                     <StripeCheckout name="MAHA SHOP"
                     billingAddress //this is inclueded in the api
                     shippingAddress//this is inclueded in the api
@@ -358,7 +365,7 @@ return (
                     stripeKey={KEY}
                     >
                     <Button>CHECKOUT NOW</Button>
-                    </StripeCheckout>
+                    </StripeCheckout>}
           </Summary>
 
 

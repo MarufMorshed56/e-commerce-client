@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
+import { useSelector } from 'react-redux'
 
 import { popularProducts } from '../Data'
 import styled from 'styled-components'
@@ -26,14 +27,18 @@ const Products = ({sort,filter,category}) => {//  const Products = ({sort,filter
           const location = useLocation()
           var url= location.pathname.split("/")[1]?location.pathname.split("/")[1]:false
 
-          console.log("url",location.pathname,url)
+          // console.log("url",location.pathname,url)
+
+          const data = useSelector((state)=>state.query.products)
+
+          // console.log("mydata",data)
 
           useEffect(()=>{
                     const getProducts = async()=>{
                     try {     
                               // console.log("msg",sort,category,filter)
                               // const res = await axios.get("http://localhost:5000/api/v1/products")
-                              const res =await axios.get( category ? `http://localhost:5000/api/v1/products?category=${category}`: "http://localhost:5000/api/v1/products")
+                              const res = await axios.get( category ? `http://localhost:5000/api/v1/products?category=${category}`: "http://localhost:5000/api/v1/products")
                               setProducts(res.data)
 
                               console.log(res)
@@ -45,10 +50,19 @@ const Products = ({sort,filter,category}) => {//  const Products = ({sort,filter
                     getProducts()
           },[category])
 
+          // setFilteredProducts(products)
+
+useEffect(()=>{
+                    if(data){
+                              setFilteredProducts(data)
+                    }
+          },[data])
+
 useEffect(()=>{        
           if(url==="products"){
           setFilteredProducts(products.filter((item)=> Object.entries(filter).every(([key,value])=>item[key].includes(value))))}},[products,category,filter])
           // ekhane first e 
+          
 
 useEffect(()=>{
           if(sort==="new"){
@@ -61,11 +75,10 @@ useEffect(()=>{
 
 },[sort])
 
-
-          console.log(sort)
+          // console.log("yoyo",filteredProducts)
           return (
                     <Container>
-                    {!url ? products.slice(0,8).map((item)=>(<Product item={item} key={item.id}/>)) : filteredProducts.map((item)=>(<Product item={item} key={item.id}/>))}
+                    {!url ? products.slice(0,5).map((item)=>(<Product item={item} key={item.id}/>)) : filteredProducts.map((item)=>(<Product item={item} key={item.id}/>))}
                     </Container>
           )
 }

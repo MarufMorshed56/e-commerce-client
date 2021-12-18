@@ -1,7 +1,12 @@
 import React from 'react'
 import styled from "styled-components";
-
+import axios from "axios";
+import { useRef } from "react";
+import { useHistory } from "react-router";
 import { Link } from 'react-router-dom';
+
+import { publicRequest } from '../components/axiosReqMethods';
+
 const Container = styled.div`
           width: 100vw;
           height: 100vh;
@@ -16,7 +21,7 @@ const Container = styled.div`
 const GlassBack = styled.div`
           opacity:0.6;
           background-color:white;
-          height:88vh;
+          height:70vh;
           border-radius: 15px;
           width: 370px;
           position: absolute;
@@ -92,23 +97,49 @@ const ButtonTwo = styled.button`
 `;
 
 const Register = () => {
+
+  const username = useRef();
+  const email = useRef();
+  const password = useRef();
+  const passwordAgain = useRef();
+  const history = useHistory();
+
+  const handleClick = async (e) => {
+    e.preventDefault();
+    if (passwordAgain.current.value !== password.current.value) {
+      passwordAgain.current.setCustomValidity("Passwords don't match!");
+    } else {
+      const user = {
+        username: username.current.value,
+        email: email.current.value,
+        password: password.current.value,
+      };
+      try {
+        await publicRequest.post("/auth/register", user);
+        history.push("/login");
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  };
+
+
           return (
                     <Container>
                     <GlassBack/>
                     <Wrapper>
                     <Title>CREATE AN ACCOUNT</Title>
-                    <Form>
-                              <Input placeholder="name" />
-                              <Input placeholder="last name" />
-                              <Input placeholder="username" />
-                              <Input placeholder="email" />
-                              <Input placeholder="password" />
-                              <Input placeholder="confirm password" />
+                    <Form onSubmit={handleClick} >
+
+                              <Input placeholder="username" required ref={username} />
+                              <Input placeholder="email" required  ref={email} />
+                              <Input placeholder="password"  required ref={password} />
+                              <Input placeholder="confirm password"  required ref={passwordAgain} />
                               <Agreement>
                               By creating an account, I consent to the processing of my personal
                               data in accordance with the <b>PRIVACY POLICY</b>
                               </Agreement>
-                              <Button>CREATE</Button>
+                              <Button type="submit">CREATE</Button>
                     </Form>
                     <SecondButtons>
                     <ButtonTwo>
@@ -127,3 +158,5 @@ const Register = () => {
 }
 
 export default Register
+
+

@@ -133,9 +133,9 @@ const Login = () => {
 
           const handleClick =(e)=>{
                     e.preventDefault();
-                    login(dispatch,{username,password})
+                    login(dispatch,{username,password}) // here we passed in values to "login" component which is "apiCall.js". & from "apiCall.js" we made "axios" req to the api & authenticated the user
 
-                    error && setTimeout(function () {document.getElementById('errorId').style.display='none'}, 3000)
+                    //error && setTimeout(function () {document.getElementById('errorId').style.display='none'}, 3000)
                     // I have set a  timeout function so  after clicking "login" button if "error" occurs then "Error msg" will be shown for 3 seconds & then the "setTimeOut" funtion will set the "Error msg" component's display to "none", thus hidding it after 3 sec
                     
           }
@@ -153,10 +153,13 @@ const Login = () => {
                               <Button disabled={isFetching} onClick={handleClick}>LOGIN</Button>
                               {/*  Basically at the begining "isFetching" is "false" so "disable=false" so button is enabled but when we click it  for a few moment "isFetching" goes from "false" to "true" & then "false" again, so button becomes diabled momenterily when database is getting accesed */}
                     </Buttons>
-                    {error &&  <Error id="errorId">Something Went Wrong</Error>}
+                    {/* {error &&  <Error id="errorId">Something Went Wrong</Error>} */}
                                {/* this means if condition so if error exists , then show this msg */}
                     <Link2>FORGOT PASSWORD !!!</Link2>
+                    <Link style={{"textDecoration":"none", color:"black"}} to="/register">
                     <Link2>CREATE A NEW ACCOUNT</Link2>
+
+                    </Link>
                     </Form>
                     <SecondButtons>
                     <ButtonTwo>

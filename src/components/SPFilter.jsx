@@ -21,6 +21,7 @@ import nextId from "react-id-generator";
 const Container = styled.div`
           height:80vh;
           width:100vw;
+          ${Mobile({height:"90vh"})}
 `;
 
 

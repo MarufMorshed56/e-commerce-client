@@ -19,7 +19,7 @@ const Heading = styled.p`
           font-weight:1000;
           font-size:50px;
           text-transform: capitalize;
-          ${Mobile({display:"none",height:"20px", fontSize:"20px", paddingBottom:"5px",marginBottom:"5px" })}
+          ${Mobile({height:"20px", fontSize:"20px", paddingBottom:"5px",marginBottom:"5px" })}
 `
 
 
